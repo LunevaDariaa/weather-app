@@ -1,69 +1,47 @@
 "use strict";
+import WeatherService from "/.weatherService";
 
 class App {
   constructor() {
-    this.city = "Toronto";
+    this.weatherService = new WeatherService();
+    console.log("App constructor");
 
     document
       .querySelector(".search_btn")
-      .addEventListener("click", this.getData.bind(this));
+      .addEventListener("click", this.handleProgramFlow.bind(this));
 
-    this.getData();
+    this.handleProgramFlow();
   }
 
-  async getLocationData(city) {
+  async _getTemperature() {
     try {
-      const locationRes = await fetch(
-        `https://geocoding-api.open-meteo.com/v1/search?name=${city}&count=10&language=en&format=json`
-      );
-      const locationData = await locationRes.json();
+      console.log("_getTemperature");
 
-      if (locationData.results && locationData.results.length > 0) {
-        const { latitude: locationlng, longitude: locationLon } =
-          locationData.results[0];
-        return { locationlng, locationLon };
-      } else {
-        throw new Error("Location data not found");
-      }
-    } catch (error) {
-      console.error("Error fetching location data:", error.message);
-      throw error;
-    }
-  }
-
-  async getData() {
-    const userCity = document.querySelector(".city_search").value;
-
-    if (userCity) {
-      this.city = userCity;
-    }
-
-    try {
-      const { locationlng, locationLon } = await this.getLocationData(
-        this.city
-      );
-
-      const response = await fetch(
-        `https://api.open-meteo.com/v1/forecast?latitude=${locationlng}&longitude=${locationLon}&hourly=temperature_2m`
-      );
-      const data = await response.json();
+      const data = await this.weatherService.fetchWeatherData();
       console.log(data);
-
       const temperature = data.hourly.temperature_2m;
-      console.log(temperature);
-
       const time = data.hourly.time;
-      console.log(time);
+      const rain = data.hourly.rain;
+      console.log(rain);
+      //   for (let i = 0; i < temperature.length; i++) {
+      //     console.log(`${time[i]} : ${temperature[i]}`);
+      //   }
+    } catch (err) {
+      console.error(err.message);
+    }
+  }
+  async handleProgramFlow() {
+    try {
+      console.log("handleProgramFlow");
 
-      for (let i = 0; i < temperature.length; i++) {
-        console.log(`${time[i]} : ${temperature[i]}`);
-      }
+      const data = await this.weatherService.fetchWeatherData();
+      await this._getTemperature(data);
     } catch (error) {
-      console.error("Error fetching data:", error.message);
+      // Handle errors here if needed
     }
   }
 }
 
 document.addEventListener("DOMContentLoaded", function () {
-  const appInstance = new App();
+  new App();
 });
