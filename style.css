@@ -1,0 +1,110 @@
+body {
+  display: flex;
+
+  margin: 0;
+  padding: 0;
+  /* background-image: url("/day_anime.jpg"); */
+  background-image: url("/nigth_anime.jpg");
+  background-repeat: no-repeat;
+  background-attachment: fixed;
+  background-size: cover;
+  /* background-color: rgba(89, 124, 148, 0.97); */
+  background-position: center;
+  /* backdrop-filter: blur(50px); */
+}
+
+/* Header content */
+header {
+  position: fixed;
+  display: flex;
+  justify-content: end;
+  align-items: center;
+  width: 100%;
+  /* opacity: 0.6; */
+  margin: 0;
+  height: 50px;
+
+  background-color: rgb(6, 5, 12);
+}
+
+.city_search {
+  margin: 1px;
+  padding-left: 10px;
+  height: 29px;
+  border-radius: 8px;
+  align-self: center;
+  background-color: rgb(208, 212, 215);
+  outline: none;
+}
+
+.search_btn {
+  margin-right: 2%;
+  border-radius: 5px;
+  font-size: 24px;
+  background-color: #478d9d;
+  color: rgb(255, 255, 255);
+  border: none;
+  padding: 0 10px;
+  cursor: pointer;
+}
+
+.search_btn:hover {
+  background-color: #45a08b;
+}
+/* Main Content */
+#main {
+  /* position: absolute; */
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 150px 0;
+  margin-top: 50px;
+  width: 100%;
+  height: calc(100vh - 50px);
+  box-sizing: border-box;
+  /* background-color: #45a08b; */
+}
+.main_info_conteiner {
+  margin-right: 40px;
+  width: 25vw;
+  min-width: 450px;
+  align-self: flex-end;
+  height: 400px;
+  background-color: #478d9d;
+}
+
+.main_weather_conteiner {
+  display: flex;
+  flex-direction: column;
+  width: 30vw;
+  align-self: flex-end;
+  min-width: 500px;
+  height: 600px;
+  overflow: hidden;
+
+  /* background-color: #478d9d; */
+}
+
+.week_weather_container,
+.hourly_weather_conteiner {
+  border-radius: 20px;
+  margin: 2px;
+
+  background-color: rgba(0, 0, 0, 0.288);
+  backdrop-filter: blur(5px);
+  /* box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1); */
+
+  width: 99%;
+}
+
+.hourly_weather_conteiner {
+  width: 99%;
+  height: 37%;
+}
+.week_weather_container {
+  margin-top: 10px;
+  width: 99%;
+  /* z-index: 5; */
+
+  height: 63%;
+}

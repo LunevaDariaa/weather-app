@@ -1,43 +1,58 @@
 "use strict";
-import WeatherService from "/.weatherService";
+import WeatherService from "./weatherService.js";
 
 class App {
   constructor() {
     this.weatherService = new WeatherService();
-    console.log("App constructor");
+    this.data = null;
 
     document
       .querySelector(".search_btn")
-      .addEventListener("click", this.handleProgramFlow.bind(this));
+      .addEventListener("click", () => this.handleProgramFlow());
 
     this.handleProgramFlow();
   }
 
   async _getTemperature() {
     try {
-      console.log("_getTemperature");
-
-      const data = await this.weatherService.fetchWeatherData();
-      console.log(data);
-      const temperature = data.hourly.temperature_2m;
-      const time = data.hourly.time;
-      const rain = data.hourly.rain;
-      console.log(rain);
-      //   for (let i = 0; i < temperature.length; i++) {
-      //     console.log(`${time[i]} : ${temperature[i]}`);
-      //   }
+      if (this.data) {
+        console.log(this.data);
+        const temperature = this.data.hourly.temperature_2m;
+        const time = this.data.hourly.time;
+        const rain = this.data.hourly.rain;
+        console.log(rain);
+        // for (let i = 0; i < temperature.length; i++) {
+        //   console.log(`${time[i]} : ${temperature[i]}`);
+        // }
+      } else {
+        console.error("Data is not available.");
+      }
     } catch (err) {
       console.error(err.message);
     }
   }
+
+  async _isDay() {
+    try {
+      const dayInfo = this.data.hourly.is_day;
+      console.log(dayInfo);
+      if (dayInfo[0] === 1) {
+        console.log("day");
+      } else {
+        console.log("night");
+      }
+    } catch (err) {
+      console.error(err);
+    }
+  }
+
   async handleProgramFlow() {
     try {
-      console.log("handleProgramFlow");
-
-      const data = await this.weatherService.fetchWeatherData();
-      await this._getTemperature(data);
+      this.data = await this.weatherService.fetchWeatherData();
+      await this._getTemperature();
+      await this._isDay();
     } catch (error) {
-      // Handle errors here if needed
+      console.log(error);
     }
   }
 }
