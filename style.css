@@ -1,3 +1,14 @@
+@import url("https://fonts.googleapis.com/css2?family=Amatic+SC:wght@400;700&family=EB+Garamond:wght@500&family=Playfair+Display:wght@500&family=Protest+Riot&display=swap");
+
+@import url("https://fonts.googleapis.com/css2?family=Amatic+SC:wght@400;700&family=EB+Garamond:wght@500&family=Passion+One:wght@400;700;900&family=Playfair+Display:wght@500&family=Protest+Riot&display=swap");
+
+@import url("https://fonts.googleapis.com/css2?family=Alata&family=Amatic+SC:wght@400;700&family=EB+Garamond:wght@500&family=Passion+One:wght@400;700;900&family=Playfair+Display:wght@500&family=Protest+Riot&display=swap");
+* {
+  margin: 0;
+  padding: 0;
+  /* font-family: "Protest Riot"; */
+}
+
 body {
   display: flex;
 
@@ -67,10 +78,10 @@ header {
 .main_info_conteiner {
   margin-right: 40px;
   width: 25vw;
-  min-width: 450px;
+  min-width: 470px;
   align-self: flex-end;
-  height: 400px;
-  background-color: #478d9d;
+  height: 270px;
+  /* background-color: #478d9d; */
 }
 
 .main_weather_conteiner {
@@ -107,4 +118,56 @@ header {
   /* z-index: 5; */
 
   height: 63%;
+}
+
+.main_info_row1,
+.main_info_row2,
+.main_info_row3 {
+  display: flex;
+  justify-content: baseline;
+  align-items: flex-end;
+  width: 100%;
+  color: white;
+}
+
+.main_info_row1 {
+  height: 65%;
+  text-align: center;
+  /* padding: 20px 0 0 0; */
+}
+
+.main_info_temp {
+  font-size: 180px;
+  font-family: "Alata";
+}
+
+.main_info_celcius {
+  font-size: 60px;
+  padding: 0 0 110px 0;
+  font-family: "Alata";
+}
+.main_info_cur_weather {
+  font-size: 120px;
+  padding-bottom: 20px;
+  margin-left: 50px;
+}
+
+.main_info_row2 {
+  height: 20%;
+  margin: 0;
+  font-size: 70px;
+  font-family: "Alata";
+  padding-left: 15px;
+
+  font-weight: 1000;
+}
+.main_info_row3 {
+  height: 15%;
+  font-size: 24px;
+  padding-left: 15px;
+  font-family: "Alata";
+}
+.main_info_highes_temp,
+.main_info_lowest_temp {
+  margin-left: 10px;
 }
