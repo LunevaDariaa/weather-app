@@ -1,12 +1,10 @@
-@import url("https://fonts.googleapis.com/css2?family=Amatic+SC:wght@400;700&family=EB+Garamond:wght@500&family=Playfair+Display:wght@500&family=Protest+Riot&display=swap");
-
-@import url("https://fonts.googleapis.com/css2?family=Amatic+SC:wght@400;700&family=EB+Garamond:wght@500&family=Passion+One:wght@400;700;900&family=Playfair+Display:wght@500&family=Protest+Riot&display=swap");
-
 @import url("https://fonts.googleapis.com/css2?family=Alata&family=Amatic+SC:wght@400;700&family=EB+Garamond:wght@500&family=Passion+One:wght@400;700;900&family=Playfair+Display:wght@500&family=Protest+Riot&display=swap");
 * {
   margin: 0;
   padding: 0;
   /* font-family: "Protest Riot"; */
+  color: white;
+  font-family: "Alata";
 }
 
 body {
@@ -84,13 +82,13 @@ header {
   /* background-color: #478d9d; */
 }
 
-.main_weather_conteiner {
+#main_weather_conteiner {
   display: flex;
   flex-direction: column;
   width: 30vw;
   align-self: flex-end;
   min-width: 500px;
-  height: 600px;
+  height: 650px;
   overflow: hidden;
 
   /* background-color: #478d9d; */
@@ -98,26 +96,24 @@ header {
 
 .week_weather_container,
 .hourly_weather_conteiner {
+  display: flex;
+  flex-direction: column;
   border-radius: 20px;
   margin: 2px;
-
+  padding: 4%;
   background-color: rgba(0, 0, 0, 0.288);
   backdrop-filter: blur(5px);
   /* box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1); */
 
-  width: 99%;
+  width: 92%;
 }
 
 .hourly_weather_conteiner {
-  width: 99%;
-  height: 37%;
+  height: 35%;
 }
 .week_weather_container {
   margin-top: 10px;
-  width: 99%;
-  /* z-index: 5; */
-
-  height: 63%;
+  height: 65%;
 }
 
 .main_info_row1,
@@ -138,13 +134,13 @@ header {
 
 .main_info_temp {
   font-size: 180px;
-  font-family: "Alata";
+  /* font-family: "Alata"; */
 }
 
 .main_info_celcius {
   font-size: 60px;
   padding: 0 0 110px 0;
-  font-family: "Alata";
+  /* font-family: "Alata"; */
 }
 .main_info_cur_weather {
   font-size: 120px;
@@ -156,7 +152,7 @@ header {
   height: 20%;
   margin: 0;
   font-size: 70px;
-  font-family: "Alata";
+  /* font-family: "Alata"; */
   padding-left: 15px;
 
   font-weight: 1000;
@@ -170,4 +166,100 @@ header {
 .main_info_highes_temp,
 .main_info_lowest_temp {
   margin-left: 10px;
+}
+
+/* Weather container | Right side */
+/* Hourly */
+.weather_text_prediction,
+.days_text_prediction {
+  padding-left: 10px;
+}
+.custom-line {
+  border: none;
+  margin: 2% 0;
+  height: 2px; /* Adjust the height/thickness of the line */
+  background-color: #6d738f; /* Adjust the color of the line */
+  width: 100%; /* Adjust the width of the line */
+}
+
+#hourly_container {
+  display: flex;
+  justify-content: space-around;
+  font-size: 20px;
+  height: 100%;
+  align-items: center;
+}
+.hourly_weather_symbol {
+  font-size: 40px;
+}
+.hourly_temperature {
+  display: flex;
+  flex-direction: row;
+}
+
+.celsius,
+.weekly_celsius {
+  font-size: 12px;
+}
+/* Weekly */
+#weekly_row {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: space-around;
+  font-size: 17px;
+}
+.weekly_weather_symbol {
+  font-size: 36px;
+}
+.weekly_temperature_min,
+.weekly_temperature_max {
+  display: flex;
+}
+
+/* Slider */
+.temperature-slider {
+  width: 30%;
+  max-width: 400px;
+  text-align: center;
+}
+
+input[type="range"] {
+  width: 100%;
+  /* background: transparent; */
+
+  margin-top: 20px;
+  appearance: none;
+  height: 5px;
+  background-color: #ddd;
+  outline: none;
+}
+
+input[type="range"]::-webkit-slider-runnable-track {
+  -webkit-appearance: none;
+  appearance: none;
+  background: linear-gradient(
+    to right,
+    rgb(57, 182, 207) 0%,
+    rgb(231, 182, 83) 50%,
+    white 50%,
+    white 100%
+  );
+  border-radius: 5px;
+  height: 5px;
+}
+
+input[type="range"]::-webkit-slider-thumb {
+  -webkit-appearance: none;
+  appearance: none;
+  width: 16px;
+  height: 16px;
+  background-color: white;
+  border-radius: 50%;
+  height: 0;
+  width: 0;
+}
+
+.hidden {
+  display: none;
 }

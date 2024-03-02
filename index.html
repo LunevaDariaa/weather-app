@@ -14,6 +14,7 @@
     </header>
 
     <div id="main">
+      <!-- The main info details | Left side -->
       <div class="main_info_conteiner">
         <div class="main_info_row1">
           <div class="main_info_temp">23</div>
@@ -30,11 +31,251 @@
           <div class="main_info_lowest_temp">18°</div>
         </div>
       </div>
-      <div class="main_weather_conteiner">
-        <div class="hourly_weather_conteiner"></div>
-        <div class="week_weather_container"></div>
+
+      <!-- The weather details | Right side -->
+      <div id="main_weather_conteiner">
+        <!-- Hour info -->
+        <div class="hourly_weather_conteiner">
+          <div class="weather_text_prediction">
+            Thunderstorm expected around 00:00
+          </div>
+          <hr class="custom-line" />
+
+          <div id="hourly_container">
+            <div class="hourly_col">
+              <div class="hourly_hour">23</div>
+              <div class="hourly_weather_symbol">&#127782;</div>
+              <div class="hourly_temperature">
+                <div class="temp">15</div>
+                <div class="celsius">°C</div>
+              </div>
+            </div>
+
+            <div class="hourly_col">
+              <div class="hourly_hour">23</div>
+              <div class="hourly_weather_symbol">&#127782;</div>
+              <div class="hourly_temperature">
+                <div class="temp">15</div>
+                <div class="celsius">°C</div>
+              </div>
+            </div>
+
+            <div class="hourly_col">
+              <div class="hourly_hour">23</div>
+              <div class="hourly_weather_symbol">&#127782;</div>
+              <div class="hourly_temperature">
+                <div class="temp">15</div>
+                <div class="celsius">°C</div>
+              </div>
+            </div>
+
+            <div class="hourly_col">
+              <div class="hourly_hour">23</div>
+              <div class="hourly_weather_symbol">&#127782;</div>
+              <div class="hourly_temperature">
+                <div class="temp">15</div>
+                <div class="celsius">°C</div>
+              </div>
+            </div>
+
+            <div class="hourly_col">
+              <div class="hourly_hour">23</div>
+              <div class="hourly_weather_symbol">&#127782;</div>
+              <div class="hourly_temperature">
+                <div class="temp">15</div>
+                <div class="celsius">°C</div>
+              </div>
+            </div>
+
+            <div class="hourly_col">
+              <div class="hourly_hour">23</div>
+              <div class="hourly_weather_symbol">&#127782;</div>
+              <div class="hourly_temperature">
+                <div class="temp">15</div>
+                <div class="celsius">°C</div>
+              </div>
+            </div>
+
+            <div class="hourly_col">
+              <div class="hourly_hour">23</div>
+              <div class="hourly_weather_symbol">&#127782;</div>
+              <div class="hourly_temperature">
+                <div class="temp">15</div>
+                <div class="celsius">°C</div>
+              </div>
+            </div>
+
+            <div class="hourly_col">
+              <div class="hourly_hour">23</div>
+              <div class="hourly_weather_symbol">&#127782;</div>
+              <div class="hourly_temperature">
+                <div class="temp">15</div>
+                <div class="celsius">°C</div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Days info -->
+        <div class="week_weather_container">
+          <div class="days_text_prediction">7-Day Forecast</div>
+          <hr class="custom-line" />
+
+          <div id="weekly_row">
+            <div class="weekly_day">Today</div>
+            <div class="weekly_weather_symbol">&#127782;</div>
+            <div class="weekly_temperature_min">
+              <div class="weekly_min_temp">18</div>
+              <div class="weekly_celsius">°C</div>
+            </div>
+            <div class="temperature-slider">
+              <input
+                type="range"
+                min="10"
+                max="33"
+                step="1"
+                id="temperatureRange"
+              />
+            </div>
+            <div class="weekly_temperature_max">
+              <div class="weekly_max_temp">18</div>
+              <div class="weekly_celsius">°C</div>
+            </div>
+          </div>
+
+          <div id="weekly_row">
+            <div class="weekly_day">Today</div>
+            <div class="weekly_weather_symbol">&#127782;</div>
+            <div class="weekly_temperature_min">
+              <div class="weekly_min_temp">18</div>
+              <div class="weekly_celsius">°C</div>
+            </div>
+            <div class="temperature-slider">
+              <input
+                type="range"
+                min="10"
+                max="33"
+                step="1"
+                id="temperatureRange"
+              />
+            </div>
+            <div class="weekly_temperature_max">
+              <div class="weekly_max_temp">18</div>
+              <div class="weekly_celsius">°C</div>
+            </div>
+          </div>
+
+          <div id="weekly_row">
+            <div class="weekly_day">Today</div>
+            <div class="weekly_weather_symbol">&#127782;</div>
+            <div class="weekly_temperature_min">
+              <div class="weekly_min_temp">18</div>
+              <div class="weekly_celsius">°C</div>
+            </div>
+            <div class="temperature-slider">
+              <input
+                type="range"
+                min="10"
+                max="33"
+                step="1"
+                id="temperatureRange"
+              />
+            </div>
+            <div class="weekly_temperature_max">
+              <div class="weekly_max_temp">18</div>
+              <div class="weekly_celsius">°C</div>
+            </div>
+          </div>
+
+          <div id="weekly_row">
+            <div class="weekly_day">Today</div>
+            <div class="weekly_weather_symbol">&#127782;</div>
+            <div class="weekly_temperature_min">
+              <div class="weekly_min_temp">18</div>
+              <div class="weekly_celsius">°C</div>
+            </div>
+            <div class="temperature-slider">
+              <input
+                type="range"
+                min="10"
+                max="33"
+                step="1"
+                id="temperatureRange"
+              />
+            </div>
+            <div class="weekly_temperature_max">
+              <div class="weekly_max_temp">18</div>
+              <div class="weekly_celsius">°C</div>
+            </div>
+          </div>
+
+          <div id="weekly_row">
+            <div class="weekly_day">Today</div>
+            <div class="weekly_weather_symbol">&#127782;</div>
+            <div class="weekly_temperature_min">
+              <div class="weekly_min_temp">18</div>
+              <div class="weekly_celsius">°C</div>
+            </div>
+            <div class="temperature-slider">
+              <input
+                type="range"
+                min="10"
+                max="33"
+                step="1"
+                id="temperatureRange"
+              />
+            </div>
+            <div class="weekly_temperature_max">
+              <div class="weekly_max_temp">18</div>
+              <div class="weekly_celsius">°C</div>
+            </div>
+          </div>
+
+          <div id="weekly_row">
+            <div class="weekly_day">Today</div>
+            <div class="weekly_weather_symbol">&#127782;</div>
+            <div class="weekly_temperature_min">
+              <div class="weekly_min_temp">18</div>
+              <div class="weekly_celsius">°C</div>
+            </div>
+            <div class="temperature-slider">
+              <input
+                type="range"
+                min="10"
+                max="33"
+                step="1"
+                id="temperatureRange"
+              />
+            </div>
+            <div class="weekly_temperature_max">
+              <div class="weekly_max_temp">18</div>
+              <div class="weekly_celsius">°C</div>
+            </div>
+          </div>
+
+          <div id="weekly_row">
+            <div class="weekly_day">Today</div>
+            <div class="weekly_weather_symbol">&#127782;</div>
+            <div class="weekly_temperature_min">
+              <div class="weekly_min_temp">18</div>
+              <div class="weekly_celsius">°C</div>
+            </div>
+            <div class="temperature-slider">
+              <input
+                type="range"
+                min="10"
+                max="33"
+                step="1"
+                id="temperatureRange"
+              />
+            </div>
+            <div class="weekly_temperature_max">
+              <div class="weekly_max_temp">18</div>
+              <div class="weekly_celsius">°C</div>
+            </div>
+          </div>
+        </div>
       </div>
     </div>
-    <div class="overlay"></div>
   </body>
 </html>

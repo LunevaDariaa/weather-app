@@ -1,5 +1,6 @@
 "use strict";
 import WeatherService from "./weatherService.js";
+document.getElementById("temperatureRange").disabled = true;
 
 class App {
   constructor() {
