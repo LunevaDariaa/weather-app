@@ -30,37 +30,42 @@ class App {
     }
   }
 
-  async _getTemperature() {
+  async _fetchTemperatureData() {
     try {
       if (this.data) {
-        console.log(this.data);
         const temperature = this.data.hourly.temperature_2m;
         const time = this.data.hourly.time;
 
         const currentHour = this.#cityTime.c.hour;
-        container.innerHTML = "";
+
         // Find the index of the current hour in the weather data
         const currentIndex = time.findIndex(
           (dateTime) => DateTime.fromISO(dateTime).hour === currentHour
         );
 
-        for (
-          let i = currentIndex;
-          i < currentIndex + 8 && i < time.length;
-          i++
-        ) {
-          const dateTime = DateTime.fromISO(time[i]);
-          const hour = dateTime.hour;
-
-          console.log(hour);
-          console.log(`${temperature[i]}`);
-          this._displayHourlyTemp(hour, temperature[i]);
-        }
+        return { temperature, time, currentIndex };
       } else {
         console.error("Data is not available.");
+        return null;
       }
     } catch (err) {
       console.error(err.message);
+      return null;
+    }
+  }
+
+  async _displayTemperature() {
+    const { temperature, time, currentIndex } =
+      await this._fetchTemperatureData();
+
+    if (temperature && time && currentIndex !== undefined) {
+      container.innerHTML = "";
+
+      for (let i = currentIndex; i < currentIndex + 8 && i < time.length; i++) {
+        const dateTime = DateTime.fromISO(time[i]);
+        const hour = dateTime.hour;
+        this._displayHourlyTemp(hour, temperature[i]);
+      }
     }
   }
 
@@ -118,9 +123,7 @@ class App {
     try {
       this.data = await this.weatherService.fetchWeatherData();
       await this._setCityTime();
-
-      await this._getTemperature();
-
+      await this._displayTemperature();
       await this._displayMainInfo();
     } catch (error) {
       console.log(error);
