@@ -2,7 +2,9 @@
 
 class WeatherService {
   constructor() {
-    this.city = "Toronto";
+    this.defaultCity = "Toronto";
+    this.city = this.defaultCity;
+    this.timezone;
   }
 
   //Get location info
@@ -12,18 +14,22 @@ class WeatherService {
         `https://geocoding-api.open-meteo.com/v1/search?name=${
           userCity
             ? userCity.charAt(0).toUpperCase() + userCity.slice(1)
-            : this.city
+            : this.defaultCity
         }&count=10&language=en&format=json`,
-        // `https://geocoding-api.open-meteo.com/v1/search?name=toronto&count=10&language=en&format=json`,
+
         {
           mode: "cors",
         }
       );
       const locationData = await locationRes.json();
-
+      console.log(locationData);
       if (locationData.results && locationData.results.length > 0) {
-        const { latitude: locationlng, longitude: locationLon } =
-          locationData.results[0];
+        const {
+          latitude: locationlng,
+          longitude: locationLon,
+          timezone: timeZ,
+        } = locationData.results[0];
+        this.timezone = timeZ;
         return { locationlng, locationLon };
       } else {
         throw new Error("Location data not found");
@@ -37,10 +43,12 @@ class WeatherService {
   async fetchWeatherData() {
     try {
       let userCity = document.querySelector(".city_search").value.toLowerCase();
+      this.city = userCity || this.defaultCity;
+
       const { locationlng, locationLon } = await this.getLocationData(userCity);
 
       const response = await fetch(
-        `https://api.open-meteo.com/v1/forecast?latitude=${locationlng}&longitude=${locationLon}&hourly=temperature_2m,apparent_temperature,precipitation_probability,surface_pressure,is_day,rain`
+        `https://api.open-meteo.com/v1/forecast?latitude=${locationlng}&longitude=${locationLon}&hourly=temperature_2m,apparent_temperature,precipitation_probability,surface_pressure,is_day,rain&past_days=1`
       );
       const data = await response.json();
       return data;

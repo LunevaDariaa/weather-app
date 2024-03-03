@@ -13,7 +13,7 @@ body {
   margin: 0;
   padding: 0;
   /* background-image: url("/day_anime.jpg"); */
-  background-image: url("/nigth_anime.jpg");
+  background-image: url("/night_anime.jpg");
   background-repeat: no-repeat;
   background-attachment: fixed;
   background-size: cover;
@@ -43,6 +43,7 @@ header {
   border-radius: 8px;
   align-self: center;
   background-color: rgb(208, 212, 215);
+  color: #363948;
   outline: none;
 }
 
@@ -66,7 +67,7 @@ header {
   display: flex;
   justify-content: center;
   align-items: center;
-  padding: 150px 0;
+  padding: 110px 0;
   margin-top: 50px;
   width: 100%;
   height: calc(100vh - 50px);
@@ -74,7 +75,7 @@ header {
   /* background-color: #45a08b; */
 }
 .main_info_conteiner {
-  margin-right: 40px;
+  margin-right: 60px;
   width: 25vw;
   min-width: 470px;
   align-self: flex-end;
@@ -87,7 +88,7 @@ header {
   flex-direction: column;
   width: 30vw;
   align-self: flex-end;
-  min-width: 500px;
+  min-width: 550px;
   height: 650px;
   overflow: hidden;
 
@@ -133,17 +134,17 @@ header {
 }
 
 .main_info_temp {
-  font-size: 180px;
+  font-size: 130px;
   /* font-family: "Alata"; */
 }
 
 .main_info_celcius {
-  font-size: 60px;
-  padding: 0 0 110px 0;
+  font-size: 45px;
+  padding: 0 0 94px 0;
   /* font-family: "Alata"; */
 }
 .main_info_cur_weather {
-  font-size: 120px;
+  font-size: 110px;
   padding-bottom: 20px;
   margin-left: 50px;
 }
