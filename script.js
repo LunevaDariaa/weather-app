@@ -9,7 +9,9 @@ const weekContainer = document.querySelector(".week_weather_container");
 class App {
   #cityTime;
   #curTemp;
+  #curTime;
   #curDate;
+  #curIcon;
   #temperatureArr;
   #minMaxPerDay = {};
   #dayOfWeekName;
@@ -20,7 +22,8 @@ class App {
     this.#cityTime = null;
     this.#curTemp = null;
     this.#curDate = null;
-
+    this.#curIcon = "d220.png";
+    this.#curTime = null;
     document
       .querySelector(".search_btn")
       .addEventListener("click", () => this.handleProgramFlow());
@@ -69,7 +72,7 @@ class App {
       const cityTimeZone = this.weatherService.timezone;
       this.#cityTime = DateTime.local().setZone(`${cityTimeZone}`);
       this.#curDate = this.#cityTime.c.day.toString().padStart(2, "0");
-
+      this.#curTime = this.#cityTime.c.hour;
       console.log(this.#cityTime);
     } catch (error) {
       console.error("Error setting city time:", error);
@@ -127,13 +130,18 @@ class App {
     console.log(weeklyWeatherCodes);
     const weeklyImgs = document.querySelectorAll(".weekly_weather_symbol");
     const hourlyImgs = document.querySelectorAll(".hourly_weather_symbol");
-
+    const nowPrediction = document.querySelector(".weather_text_prediction");
     return new Promise((resolve) => {
       for (let [i, code] of this.#hourWeatherCode.entries()) {
         const data = this._getWeatherDescription(code);
-        console.log(data);
         const { src } = data;
-
+        //Update current weather description
+        if (i === 0) {
+          const firstWeatherCode = this.#hourWeatherCode[0];
+          const { src, text } = this._getWeatherDescription(firstWeatherCode);
+          this.#curIcon = src;
+          nowPrediction.textContent = text;
+        }
         const hourlyImg = hourlyImgs[i];
         hourlyImg.src = `symbols/${src}`;
       }
@@ -149,6 +157,126 @@ class App {
 
       resolve(); // Resolve the promise once the content is updated
     });
+  }
+
+  _displayHourlyTemp(hour, temp, i) {
+    const text = `
+    <div class="hourly_col">
+      <div class="hourly_hour">${hour}</div>
+      <img class="hourly_weather_symbol" data-type='${i}'  src="symbols/d000.png" alt="#">
+      <div class="hourly_temperature">
+        <div class="temp">${temp}</div>
+        <div class="celsius">°C</div>
+      </div>
+    </div>
+`;
+    container.insertAdjacentHTML("beforeend", text);
+  }
+
+  async _displayWeekTemp() {
+    weekContainer.innerHTML = "";
+
+    return new Promise((resolve) => {
+      weekContainer.insertAdjacentHTML(
+        "beforeend",
+        ` <div class="days_text_prediction">7-Day Forecast</div>
+      <hr class="custom-line" />`
+      );
+      Object.keys(this.#minMaxPerDay).forEach((day, i) => {
+        if (i < 7) {
+          const temp = this.#minMaxPerDay[day];
+          this._insertWeekTemp(temp.min, temp.max, i);
+        }
+      });
+      const firstHour = document.querySelector(".hourly_col");
+      console.log(firstHour);
+      firstHour.insertAdjacentHTML("afterbegin", `<div class="now">NOW</div>`);
+
+      resolve(); // Resolve the promise once the content is inserted
+    });
+  }
+  _insertWeekTemp(min, max, i) {
+    const text = `  <div id="weekly_row">
+<div class="weekly_day">Today</div>
+<img class="weekly_weather_symbol" data-type='${i}' src="symbols/d000.png" alt="#">
+<div class="weekly_temperature_min">
+  <div class="weekly_min_temp">${min}</div>
+  <div class="weekly_celsius">°C</div>
+</div>
+<div class="temperature-slider">
+  <input
+    type="range"
+    min="10"
+    max="33"
+    step="1"
+    id="temperatureRange"
+  />
+</div>
+<div class="weekly_temperature_max">
+  <div class="weekly_max_temp">${max}</div>
+  <div class="weekly_celsius">°C</div>
+</div>
+</div>`;
+
+    weekContainer.insertAdjacentHTML("beforeend", text);
+  }
+  async _isDay() {
+    try {
+      const dayInfo = this.data.hourly.is_day;
+      console.log(dayInfo);
+      if (dayInfo[0] === 1) {
+        console.log("day");
+      } else {
+        console.log("night");
+      }
+    } catch (err) {
+      console.error(err);
+    }
+  }
+
+  _capitalize(str) {
+    return str.charAt(0).toUpperCase() + str.slice(1);
+  }
+
+  _clearData(temp, city, time) {
+    temp.innerHTML = "";
+    city.innerHTML = "";
+    time.innerHTML = "";
+  }
+  async _displayMainInfo() {
+    const temp = document.querySelector(".main_info_temp");
+    const city = document.querySelector(".main_info_location");
+    const time = document.querySelector(".main_info_time");
+    const min = document.querySelector(".main_info_lowest_temp");
+    const max = document.querySelector(".main_info_highest_temp");
+
+    const icon = document.querySelector(".main_info_cur_weather");
+    // this._clearData(temp, city, time)
+    temp.innerHTML = this.#curTemp;
+    city.innerHTML = this._capitalize(this.weatherService.city);
+    time.innerHTML = ` ${this.#cityTime.c.hour} : ${
+      this.#cityTime.c.minute
+    } | `;
+    min.innerHTML = ` ${this.#minMaxPerDay[this.#curDate].min}° `;
+    max.innerHTML = ` ${this.#minMaxPerDay[this.#curDate].max}° `;
+    console.log(this.#curIcon);
+    icon.src = `symbols/${this.#curIcon}`;
+  }
+
+  async handleProgramFlow() {
+    try {
+      this.data = await this.weatherService.fetchWeatherData();
+      await this._setCityTime();
+      await this._displayTemperature();
+      await this._minAndMaxTemp();
+      // await this._displayMainInfo();
+      await this._getWeekday();
+      await this._displayWeekTemp();
+      await this._weatherIcons();
+      await this._displayMainInfo();
+    } catch (error) {
+      console.log(error);
+    }
   }
 
   _getWeatherDescription(weatherCode) {
@@ -264,112 +392,6 @@ class App {
         };
       default:
         return { text: "Unknown weather code", src: "d000.png" };
-    }
-  }
-
-  _displayHourlyTemp(hour, temp, i) {
-    const text = `
-    <div class="hourly_col">
-      <div class="hourly_hour">${hour}</div>
-      <img class="hourly_weather_symbol" data-type='${i}'  src="symbols/d000.png" alt="#">
-      <div class="hourly_temperature">
-        <div class="temp">${temp}</div>
-        <div class="celsius">°C</div>
-      </div>
-    </div>
-`;
-    container.insertAdjacentHTML("beforeend", text);
-  }
-
-  async _displayWeekTemp() {
-    weekContainer.innerHTML = "";
-
-    return new Promise((resolve) => {
-      Object.keys(this.#minMaxPerDay).forEach((day, i) => {
-        if (i < 7) {
-          const temp = this.#minMaxPerDay[day];
-          this._insertWeekTemp(temp.min, temp.max, i);
-        }
-      });
-      resolve(); // Resolve the promise once the content is inserted
-    });
-  }
-  _insertWeekTemp(min, max, i) {
-    const text = `  <div id="weekly_row">
-<div class="weekly_day">Today</div>
-<img class="weekly_weather_symbol" data-type='${i}' src="symbols/d000.png" alt="#">
-<div class="weekly_temperature_min">
-  <div class="weekly_min_temp">${min}</div>
-  <div class="weekly_celsius">°C</div>
-</div>
-<div class="temperature-slider">
-  <input
-    type="range"
-    min="10"
-    max="33"
-    step="1"
-    id="temperatureRange"
-  />
-</div>
-<div class="weekly_temperature_max">
-  <div class="weekly_max_temp">${max}</div>
-  <div class="weekly_celsius">°C</div>
-</div>
-</div>`;
-
-    weekContainer.insertAdjacentHTML("beforeend", text);
-  }
-  async _isDay() {
-    try {
-      const dayInfo = this.data.hourly.is_day;
-      console.log(dayInfo);
-      if (dayInfo[0] === 1) {
-        console.log("day");
-      } else {
-        console.log("night");
-      }
-    } catch (err) {
-      console.error(err);
-    }
-  }
-
-  _capitalize(str) {
-    return str.charAt(0).toUpperCase() + str.slice(1);
-  }
-
-  _clearData(temp, city, time) {
-    temp.innerHTML = "";
-    city.innerHTML = "";
-    time.innerHTML = "";
-  }
-  async _displayMainInfo() {
-    const temp = document.querySelector(".main_info_temp");
-    const city = document.querySelector(".main_info_location");
-    const time = document.querySelector(".main_info_time");
-    const min = document.querySelector(".main_info_lowest_temp");
-    const max = document.querySelector(".main_info_highest_temp");
-    // this._clearData(temp, city, time)
-    temp.innerHTML = this.#curTemp;
-    city.innerHTML = this._capitalize(this.weatherService.city);
-    time.innerHTML = ` ${this.#cityTime.c.hour} : ${
-      this.#cityTime.c.minute
-    } | `;
-    min.innerHTML = ` ${this.#minMaxPerDay[this.#curDate].min}° `;
-    max.innerHTML = ` ${this.#minMaxPerDay[this.#curDate].max}° `;
-  }
-
-  async handleProgramFlow() {
-    try {
-      this.data = await this.weatherService.fetchWeatherData();
-      await this._setCityTime();
-      await this._displayTemperature();
-      await this._minAndMaxTemp();
-      await this._displayMainInfo();
-      await this._getWeekday();
-      await this._displayWeekTemp();
-      await this._weatherIcons();
-    } catch (error) {
-      console.log(error);
     }
   }
 }

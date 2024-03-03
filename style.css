@@ -106,8 +106,8 @@ header {
   border-radius: 20px;
   margin: 2px;
   padding: 4%;
-  background-color: rgba(0, 0, 0, 0.288);
-  backdrop-filter: blur(5px);
+  background-color: rgba(33, 10, 24, 0.369);
+  backdrop-filter: blur(9px);
   /* box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1); */
 
   width: 92%;
@@ -140,19 +140,21 @@ header {
 }
 
 .main_info_temp {
-  font-size: 130px;
+  font-size: 13.8vmin;
   /* font-family: "Alata"; */
 }
 
 .main_info_celcius {
   font-size: 45px;
-  padding: 0 0 94px 0;
+  padding: 0 0 10vh 0;
   /* font-family: "Alata"; */
 }
 .main_info_cur_weather {
-  font-size: 110px;
-  padding-bottom: 20px;
-  margin-left: 50px;
+  /* font-size: 110px; */
+  width: 80px;
+  height: auto;
+  padding-bottom: 5vh;
+  margin-left: 40px;
 }
 
 .main_info_row2 {
@@ -180,19 +182,20 @@ header {
 .weather_text_prediction,
 .days_text_prediction {
   padding-left: 10px;
+  font-size: 2vmin;
 }
 .custom-line {
   border: none;
-  margin: 2% 0;
+  margin: 0.6% 0;
   height: 2px; /* Adjust the height/thickness of the line */
-  background-color: #6d738f; /* Adjust the color of the line */
+  background-color: #b5b6bd; /* Adjust the color of the line */
   width: 100%; /* Adjust the width of the line */
 }
 
 #hourly_container {
   display: flex;
   justify-content: space-around;
-  font-size: 2.6vmin;
+  font-size: 2.2vmin;
   height: 14vh;
   align-items: center;
   box-sizing: border-box;
@@ -203,15 +206,19 @@ header {
     font-size: 1.5vw;
   }
 } */
-
+.hourly_col {
+  text-align: center;
+}
 .hourly_weather_symbol {
   width: 26px;
+  padding: 1vmin 0;
   height: 26px;
 }
-.hourly_temperature {
+/* .hourly_temperature {
   display: flex;
+  text-align: center;
   flex-direction: row;
-}
+} */
 
 .celsius,
 .weekly_celsius {
@@ -221,6 +228,7 @@ header {
 #weekly_row {
   padding: 0;
   display: flex;
+  flex-grow: 2;
   flex-direction: row;
   align-items: center;
   justify-content: space-around;
@@ -228,8 +236,8 @@ header {
 }
 .weekly_weather_symbol {
   /* font-size: 2vmin; */
-  width: 20px;
-  height: 20px;
+  width: 28px;
+  height: auto;
 }
 .weekly_temperature_min,
 .weekly_temperature_max {
@@ -287,3 +295,14 @@ img {
   width: 20px;
   height: 20px;
 } */
+
+.now {
+  margin: 0;
+  height: 25px;
+  width: 48px;
+  background-color: #ff00c8;
+  margin-top: 3vmin;
+  color: rgb(255, 255, 255);
+  border-radius: 6px;
+  font-size: 1.5vmin;
+}
