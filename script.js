@@ -8,10 +8,16 @@ const container = document.querySelector("#hourly_container");
 
 class App {
   #cityTime;
+  #curTemp;
+  #curDate;
+  #temperatureArr;
   constructor() {
     this.weatherService = new WeatherService();
     this.data = null;
     this.#cityTime = null;
+    this.#curTemp = null;
+    this.#curDate = null;
+
     document
       .querySelector(".search_btn")
       .addEventListener("click", () => this.handleProgramFlow());
@@ -19,10 +25,41 @@ class App {
     this.handleProgramFlow();
   }
 
+  async _minAndMaxTemp() {
+    try {
+      let days = {};
+      const daysArr = this.data.hourly.time;
+      daysArr.forEach((hour) => {
+        const dayOfMonth = hour.split("-")[2].split("T")[0];
+
+        if (!days[dayOfMonth]) {
+          days[dayOfMonth] = [];
+        }
+
+        const index = days[dayOfMonth].length;
+        const temp = Math.floor(this.#temperatureArr[index]);
+        days[dayOfMonth].push(temp);
+      });
+
+      // Calculate min and max for each day
+      const minMaxPerDay = {};
+      Object.keys(days).forEach((day) => {
+        const minTemp = Math.min(...days[day]);
+        const maxTemp = Math.max(...days[day]);
+        minMaxPerDay[day] = { min: minTemp, max: maxTemp };
+      });
+
+      console.log(minMaxPerDay);
+    } catch (err) {
+      throw new Error(err);
+    }
+  }
   async _setCityTime() {
     try {
       const cityTimeZone = this.weatherService.timezone;
       this.#cityTime = DateTime.local().setZone(`${cityTimeZone}`);
+      this.#curDate = this.#cityTime.c.day.toString().padStart(2, "0");
+
       console.log(this.#cityTime);
     } catch (error) {
       console.error("Error setting city time:", error);
@@ -33,7 +70,9 @@ class App {
   async _fetchTemperatureData() {
     try {
       if (this.data) {
-        const temperature = this.data.hourly.temperature_2m;
+        console.log(this.data);
+        this.#temperatureArr = this.data.hourly.temperature_2m;
+        console.log(this.#temperatureArr);
         const time = this.data.hourly.time;
 
         const currentHour = this.#cityTime.c.hour;
@@ -42,8 +81,8 @@ class App {
         const currentIndex = time.findIndex(
           (dateTime) => DateTime.fromISO(dateTime).hour === currentHour
         );
-
-        return { temperature, time, currentIndex };
+        this.#curTemp = this.#temperatureArr[currentIndex];
+        return { temperature: this.#temperatureArr, time, currentIndex };
       } else {
         console.error("Data is not available.");
         return null;
@@ -64,7 +103,7 @@ class App {
       for (let i = currentIndex; i < currentIndex + 8 && i < time.length; i++) {
         const dateTime = DateTime.fromISO(time[i]);
         const hour = dateTime.hour;
-        this._displayHourlyTemp(hour, temperature[i]);
+        this._displayHourlyTemp(hour, Math.floor(temperature[i]));
       }
     }
   }
@@ -112,7 +151,7 @@ class App {
     const city = document.querySelector(".main_info_location");
     const time = document.querySelector(".main_info_time");
     // this._clearData(temp, city, time)
-    temp.innerHTML = this.data.hourly.temperature_2m[0];
+    temp.innerHTML = this.#curTemp;
     city.innerHTML = this._capitalize(this.weatherService.city);
     time.innerHTML = ` ${this.#cityTime.c.hour} : ${
       this.#cityTime.c.minute
@@ -125,6 +164,7 @@ class App {
       await this._setCityTime();
       await this._displayTemperature();
       await this._displayMainInfo();
+      await this._minAndMaxTemp();
     } catch (error) {
       console.log(error);
     }

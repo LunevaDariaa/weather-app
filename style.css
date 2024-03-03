@@ -88,9 +88,9 @@ header {
 #main_weather_conteiner {
   display: flex;
   flex-direction: column;
-  width: 39vw;
+  width: 34vw;
   align-self: flex-end;
-  min-width: 400px;
+  min-width: 57vh;
   height: 78vh;
   overflow: hidden;
   bottom: 10px;
@@ -102,6 +102,7 @@ header {
 .hourly_weather_conteiner {
   display: flex;
   flex-direction: column;
+  justify-content: space-around;
   border-radius: 20px;
   margin: 2px;
   padding: 4%;
