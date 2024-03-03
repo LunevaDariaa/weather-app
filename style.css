@@ -1,4 +1,6 @@
 @import url("https://fonts.googleapis.com/css2?family=Alata&family=Amatic+SC:wght@400;700&family=EB+Garamond:wght@500&family=Passion+One:wght@400;700;900&family=Playfair+Display:wght@500&family=Protest+Riot&display=swap");
+
+/* 1266 768 */
 * {
   margin: 0;
   padding: 0;
@@ -67,7 +69,7 @@ header {
   display: flex;
   justify-content: center;
   align-items: flex-start;
-  padding: 110px 0;
+  padding: 90px 0;
   margin-top: 50px;
   width: 100%;
   height: calc(100vh - 50px);
@@ -86,12 +88,13 @@ header {
 #main_weather_conteiner {
   display: flex;
   flex-direction: column;
-  width: 30vw;
+  width: 39vw;
   align-self: flex-end;
-  min-width: 550px;
-  height: 650px;
+  min-width: 400px;
+  height: 78vh;
   overflow: hidden;
-
+  bottom: 10px;
+  box-sizing: border-box;
   /* background-color: #478d9d; */
 }
 
@@ -107,14 +110,16 @@ header {
   /* box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1); */
 
   width: 92%;
+  box-sizing: border-box;
+  overflow-y: hidden;
 }
 
 .hourly_weather_conteiner {
-  height: 35%;
+  height: calc(35% - 10px); /* Adjust the height as needed */
 }
 .week_weather_container {
   margin-top: 10px;
-  height: 65%;
+  height: calc(65% - 10px); /* Adjust the height as needed */
 }
 
 .main_info_row1,
@@ -186,12 +191,20 @@ header {
 #hourly_container {
   display: flex;
   justify-content: space-around;
-  font-size: 20px;
-  height: 100%;
+  font-size: 2.6vmin;
+  height: 14vh;
   align-items: center;
+  box-sizing: border-box;
 }
+
+/* @media screen and (min-width: 600px) {
+  #hourly_container {
+    font-size: 1.5vw;
+  }
+} */
+
 .hourly_weather_symbol {
-  font-size: 40px;
+  font-size: 4.6vmin;
 }
 .hourly_temperature {
   display: flex;
@@ -204,14 +217,15 @@ header {
 }
 /* Weekly */
 #weekly_row {
+  padding: 0;
   display: flex;
   flex-direction: row;
   align-items: center;
   justify-content: space-around;
-  font-size: 17px;
+  font-size: 2vmin;
 }
 .weekly_weather_symbol {
-  font-size: 36px;
+  font-size: 4vmin;
 }
 .weekly_temperature_min,
 .weekly_temperature_max {
@@ -221,7 +235,7 @@ header {
 /* Slider */
 .temperature-slider {
   width: 30%;
-  max-width: 400px;
+  max-width: 150px;
   text-align: center;
 }
 
@@ -229,7 +243,7 @@ input[type="range"] {
   width: 100%;
   /* background: transparent; */
 
-  margin-top: 20px;
+  /* margin-top: 20px; */
   appearance: none;
   height: 5px;
   background-color: #ddd;
