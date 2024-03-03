@@ -2,15 +2,17 @@
 import { DateTime } from "./luxon.js";
 
 import WeatherService from "./weatherService.js";
-document.getElementById("temperatureRange").disabled = true;
-
+// document.getElementById("temperatureRange").disabled = true;
+const dayNames = ["Sun", "Mon", "Tue", "Wed", "Th", "Fri", "Sat"];
 const container = document.querySelector("#hourly_container");
-
+const weekContainer = document.querySelector(".week_weather_container");
 class App {
   #cityTime;
   #curTemp;
   #curDate;
   #temperatureArr;
+  #minMaxPerDay = {};
+  #dayOfWeekName;
   constructor() {
     this.weatherService = new WeatherService();
     this.data = null;
@@ -25,31 +27,38 @@ class App {
     this.handleProgramFlow();
   }
 
+  async _getWeekday() {
+    const now = new Date();
+    const dayOfWeekNumber = now.getDay();
+    this.#dayOfWeekName = dayNames[dayOfWeekNumber];
+
+    console.log("Day of the week (name):", this.#dayOfWeekName);
+  }
   async _minAndMaxTemp() {
     try {
       let days = {};
       const daysArr = this.data.hourly.time;
-      daysArr.forEach((hour) => {
+      daysArr.forEach((hour, i) => {
         const dayOfMonth = hour.split("-")[2].split("T")[0];
 
         if (!days[dayOfMonth]) {
           days[dayOfMonth] = [];
         }
 
-        const index = days[dayOfMonth].length;
-        const temp = Math.floor(this.#temperatureArr[index]);
+        const temp = Math.floor(this.#temperatureArr[i]);
         days[dayOfMonth].push(temp);
       });
 
       // Calculate min and max for each day
-      const minMaxPerDay = {};
+
       Object.keys(days).forEach((day) => {
         const minTemp = Math.min(...days[day]);
         const maxTemp = Math.max(...days[day]);
-        minMaxPerDay[day] = { min: minTemp, max: maxTemp };
+        this.#minMaxPerDay[day] = { min: minTemp, max: maxTemp };
       });
 
-      console.log(minMaxPerDay);
+      console.log(this.#minMaxPerDay);
+      console.log(days);
     } catch (err) {
       throw new Error(err);
     }
@@ -72,9 +81,7 @@ class App {
       if (this.data) {
         console.log(this.data);
         this.#temperatureArr = this.data.hourly.temperature_2m;
-        console.log(this.#temperatureArr);
         const time = this.data.hourly.time;
-
         const currentHour = this.#cityTime.c.hour;
 
         // Find the index of the current hour in the weather data
@@ -108,6 +115,137 @@ class App {
     }
   }
 
+  _weatherIcons() {
+    const houlyWeatherCodes = this.data.hourly.weather_code;
+    const weeklyWeatherCodes = this.data.daily.weather_code;
+    console.log(houlyWeatherCodes, weeklyWeatherCodes);
+
+    houlyWeatherCodes.forEach((code, i) => {
+      const data = this._getWeatherDescription(code);
+      console.log(data);
+    });
+    weeklyWeatherCodes.forEach((code) => {
+      const data = this._getWeatherDescription(code);
+      console.log(data);
+    });
+  }
+
+  _getWeatherDescription(weatherCode) {
+    switch (weatherCode) {
+      case 0:
+        return { text: "Clear sky", src: "d000.png" };
+      case 1:
+        return { text: "Mainly clear sky", src: "d100.png" };
+      case 2:
+        return { text: "Partly cloudy sky", src: "d200.png" };
+      case 3:
+        return { text: "Overcast sky", src: "d400.png" };
+      case 45:
+      case 48:
+        return { text: "Fog ", src: "d600.png" };
+      case 51:
+        return {
+          text: "Light Drizzle",
+          src: "d210.png",
+        };
+      case 53:
+        return {
+          text: " Moderate Drizzle",
+          src: "d310.png",
+        };
+      case 55:
+        return {
+          text: "Dense Drizzle",
+          src: "d410.png",
+        };
+      case 56:
+        return {
+          text: "Freezing Drizzle",
+          src: "d211.png",
+        };
+      case 57:
+        return {
+          text: "Dense Freezing Drizzle",
+          src: "d411.png",
+        };
+      case 61:
+        return {
+          text: "Slight Rain",
+          src: "d220.png",
+        };
+      case 63:
+        return {
+          text: "Moderate Rain",
+          src: "d320.png",
+        };
+      case 65:
+        return {
+          text: "Heavy Rain",
+          src: "d420.png",
+        };
+      case 66:
+        return {
+          text: "Light Freezing Rain ",
+          src: "d221.png",
+        };
+      case 67:
+        return {
+          text: "heavy Freezing Rain",
+          src: "d421.png",
+        };
+      case 71:
+        return {
+          text: "Slight Snow fall",
+          src: "d212.png",
+        };
+      case 73:
+        return {
+          text: "Moderate Snow fall",
+          src: "d312.png",
+        };
+      case 75:
+        return {
+          text: " Heavy Snow fall",
+          src: "d412.png",
+        };
+      case 77:
+        return { text: "Snow grains", src: "d422.png" };
+      case 80:
+        return {
+          text: " Slight Rain showers",
+          src: "d210.png",
+        };
+      case 81:
+        return {
+          text: " Moderate Rain showers",
+          src: "d310.png",
+        };
+      case 82:
+        return {
+          text: "Heavy Rain showers",
+          src: "d410.png",
+        };
+      case 85:
+        return { text: "Slight Snow showers", src: "d222.png" };
+      case 86:
+        return { text: "Heavy Snow showers", src: "d322.png" };
+      case 95:
+        return { text: "Slight Thunderstorm", src: "d432.png" };
+      case 96:
+        return {
+          text: "Thunderstorm with slight hail",
+          src: "d240.png",
+        };
+      case 99:
+        return {
+          text: "Thunderstorm with heavy hail",
+          src: "d340.png",
+        };
+      default:
+        return { text: "Unknown weather code", src: "d000.png" };
+    }
+  }
+
   _displayHourlyTemp(hour, temp) {
     const text = `
     <div class="hourly_col">
@@ -119,10 +257,41 @@ class App {
       </div>
     </div>
 `;
-
     container.insertAdjacentHTML("beforeend", text);
   }
 
+  _displayWeekTemp() {
+    Object.keys(this.#minMaxPerDay).forEach((day) => {
+      const temp = this.#minMaxPerDay[day];
+      this._insertWeekTemp(temp.min, temp.max);
+    });
+  }
+
+  _insertWeekTemp(min, max) {
+    const text = `  <div id="weekly_row">
+<div class="weekly_day">Today</div>
+<div class="weekly_weather_symbol"><img src="symbols/d000.png" alt="#"></div>
+<div class="weekly_temperature_min">
+  <div class="weekly_min_temp">${min}</div>
+  <div class="weekly_celsius">°C</div>
+</div>
+<div class="temperature-slider">
+  <input
+    type="range"
+    min="10"
+    max="33"
+    step="1"
+    id="temperatureRange"
+  />
+</div>
+<div class="weekly_temperature_max">
+  <div class="weekly_max_temp">${max}</div>
+  <div class="weekly_celsius">°C</div>
+</div>
+</div>`;
+
+    weekContainer.insertAdjacentHTML("beforeend", text);
+  }
   async _isDay() {
     try {
       const dayInfo = this.data.hourly.is_day;
@@ -150,12 +319,16 @@ class App {
     const temp = document.querySelector(".main_info_temp");
     const city = document.querySelector(".main_info_location");
     const time = document.querySelector(".main_info_time");
+    const min = document.querySelector(".main_info_lowest_temp");
+    const max = document.querySelector(".main_info_highest_temp");
     // this._clearData(temp, city, time)
     temp.innerHTML = this.#curTemp;
     city.innerHTML = this._capitalize(this.weatherService.city);
     time.innerHTML = ` ${this.#cityTime.c.hour} : ${
       this.#cityTime.c.minute
     } | `;
+    min.innerHTML = ` ${this.#minMaxPerDay[this.#curDate].min}° `;
+    max.innerHTML = ` ${this.#minMaxPerDay[this.#curDate].max}° `;
   }
 
   async handleProgramFlow() {
@@ -163,8 +336,11 @@ class App {
       this.data = await this.weatherService.fetchWeatherData();
       await this._setCityTime();
       await this._displayTemperature();
-      await this._displayMainInfo();
       await this._minAndMaxTemp();
+      await this._displayMainInfo();
+      await this._getWeekday();
+      await this._displayWeekTemp();
+      await this._weatherIcons();
     } catch (error) {
       console.log(error);
     }
