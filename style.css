@@ -205,7 +205,8 @@ header {
 } */
 
 .hourly_weather_symbol {
-  font-size: 4.6vmin;
+  width: 26px;
+  height: 26px;
 }
 .hourly_temperature {
   display: flex;
@@ -226,7 +227,9 @@ header {
   font-size: 2vmin;
 }
 .weekly_weather_symbol {
-  font-size: 4vmin;
+  /* font-size: 2vmin; */
+  width: 20px;
+  height: 20px;
 }
 .weekly_temperature_min,
 .weekly_temperature_max {
@@ -279,8 +282,8 @@ input[type="range"]::-webkit-slider-thumb {
 .hidden {
   display: none;
 }
-
+/* 
 img {
   width: 20px;
   height: 20px;
-}
+} */

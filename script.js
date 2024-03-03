@@ -13,6 +13,7 @@ class App {
   #temperatureArr;
   #minMaxPerDay = {};
   #dayOfWeekName;
+  #hourWeatherCode = [];
   constructor() {
     this.weatherService = new WeatherService();
     this.data = null;
@@ -106,27 +107,47 @@ class App {
 
     if (temperature && time && currentIndex !== undefined) {
       container.innerHTML = "";
+      this.#hourWeatherCode = []; // Reset the array
+
+      let index = 0;
 
       for (let i = currentIndex; i < currentIndex + 8 && i < time.length; i++) {
         const dateTime = DateTime.fromISO(time[i]);
         const hour = dateTime.hour;
-        this._displayHourlyTemp(hour, Math.floor(temperature[i]));
+
+        this.#hourWeatherCode.push(this.data.hourly.weather_code[i]);
+        this._displayHourlyTemp(hour, Math.floor(temperature[i]), index);
+        index++;
       }
     }
   }
 
-  _weatherIcons() {
-    const houlyWeatherCodes = this.data.hourly.weather_code;
+  async _weatherIcons() {
     const weeklyWeatherCodes = this.data.daily.weather_code;
-    console.log(houlyWeatherCodes, weeklyWeatherCodes);
+    console.log(weeklyWeatherCodes);
+    const weeklyImgs = document.querySelectorAll(".weekly_weather_symbol");
+    const hourlyImgs = document.querySelectorAll(".hourly_weather_symbol");
 
-    houlyWeatherCodes.forEach((code, i) => {
-      const data = this._getWeatherDescription(code);
-      console.log(data);
-    });
-    weeklyWeatherCodes.forEach((code) => {
-      const data = this._getWeatherDescription(code);
-      console.log(data);
+    return new Promise((resolve) => {
+      for (let [i, code] of this.#hourWeatherCode.entries()) {
+        const data = this._getWeatherDescription(code);
+        console.log(data);
+        const { src } = data;
+
+        const hourlyImg = hourlyImgs[i];
+        hourlyImg.src = `symbols/${src}`;
+      }
+
+      for (let i = 0; i < Math.min(7, weeklyWeatherCodes.length); i++) {
+        const code = weeklyWeatherCodes[i];
+        const data = this._getWeatherDescription(code);
+        const { src } = data;
+
+        const weeklyImg = weeklyImgs[i];
+        weeklyImg.src = `symbols/${src}`;
+      }
+
+      resolve(); // Resolve the promise once the content is updated
     });
   }
 
@@ -246,11 +267,11 @@ class App {
     }
   }
 
-  _displayHourlyTemp(hour, temp) {
+  _displayHourlyTemp(hour, temp, i) {
     const text = `
     <div class="hourly_col">
       <div class="hourly_hour">${hour}</div>
-      <div class="hourly_weather_symbol">&#127782;</div>
+      <img class="hourly_weather_symbol" data-type='${i}'  src="symbols/d000.png" alt="#">
       <div class="hourly_temperature">
         <div class="temp">${temp}</div>
         <div class="celsius">°C</div>
@@ -260,17 +281,23 @@ class App {
     container.insertAdjacentHTML("beforeend", text);
   }
 
-  _displayWeekTemp() {
-    Object.keys(this.#minMaxPerDay).forEach((day) => {
-      const temp = this.#minMaxPerDay[day];
-      this._insertWeekTemp(temp.min, temp.max);
+  async _displayWeekTemp() {
+    weekContainer.innerHTML = "";
+
+    return new Promise((resolve) => {
+      Object.keys(this.#minMaxPerDay).forEach((day, i) => {
+        if (i < 7) {
+          const temp = this.#minMaxPerDay[day];
+          this._insertWeekTemp(temp.min, temp.max, i);
+        }
+      });
+      resolve(); // Resolve the promise once the content is inserted
     });
   }
-
-  _insertWeekTemp(min, max) {
+  _insertWeekTemp(min, max, i) {
     const text = `  <div id="weekly_row">
 <div class="weekly_day">Today</div>
-<div class="weekly_weather_symbol"><img src="symbols/d000.png" alt="#"></div>
+<img class="weekly_weather_symbol" data-type='${i}' src="symbols/d000.png" alt="#">
 <div class="weekly_temperature_min">
   <div class="weekly_min_temp">${min}</div>
   <div class="weekly_celsius">°C</div>
