@@ -107,8 +107,8 @@ header {
   border-radius: 20px;
   margin: 2px;
   padding: 4%;
-  background-color: rgba(33, 10, 24, 0.369);
-  backdrop-filter: blur(9px);
+  background-color: rgba(68, 62, 68, 0.559);
+  backdrop-filter: blur(11px);
   /* box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1); */
 
   width: 92%;
@@ -174,9 +174,9 @@ header {
   padding-left: 15px;
   font-family: "Alata";
 }
-.main_info_highes_temp,
-.main_info_lowest_temp {
-  margin-left: 10px;
+.main_info_highest_temp {
+  margin-left: 2vmin;
+  padding: 0 20px;
 }
 
 /* Weather container | Right side */
@@ -258,16 +258,15 @@ header {
 
 input[type="range"] {
   width: 100%;
-  /* background: transparent; */
+  border-radius: 3px;
 
-  /* margin-top: 20px; */
   appearance: none;
-  height: 5px;
-  background-color: #ddd;
+  height: 6px;
+  /* background-color: #ddd; */
   outline: none;
 }
 
-input[type="range"]::-webkit-slider-runnable-track {
+#temperatureRange::-webkit-slider-runnable-track {
   -webkit-appearance: none;
   appearance: none;
   background: linear-gradient(
@@ -277,7 +276,7 @@ input[type="range"]::-webkit-slider-runnable-track {
     white 50%,
     white 100%
   );
-  border-radius: 5px;
+
   height: 5px;
 }
 

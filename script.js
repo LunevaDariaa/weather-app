@@ -15,6 +15,7 @@ class App {
   #daysAfter;
   #temperatureArr;
   #minMaxPerDay = {};
+  #range;
   #hourWeatherCode = [];
   constructor() {
     this.weatherService = new WeatherService();
@@ -78,6 +79,55 @@ class App {
       throw new Error(err);
     }
   }
+
+  async _calculateMinMaxRange() {
+    let min = Infinity;
+    let max = -10000;
+    for (const { min: currentMin, max: currentMax } of Object.values(
+      this.#minMaxPerDay
+    )) {
+      min = Math.min(min, currentMin);
+      max = Math.max(max, currentMax);
+    }
+    console.log(min, max);
+    return { min, max }; // weekly min and max
+  }
+
+  async _displayRange() {
+    const { min: minWeekly, max: maxWeekly } =
+      await this._calculateMinMaxRange();
+
+    const tempRange = document.querySelectorAll(".temperatureRange");
+    // if (minPercentage && maxPercentage) {
+    //   minPercentage = [];
+    //   maxPercentage = [];
+    // }
+    let minPercentage = [];
+    let maxPercentage = [];
+
+    //Calculate min and max percentage for temp range for each day
+    for (const value of Object.values(this.#minMaxPerDay)) {
+      console.log(value);
+      // Calculate the percentage of the highlighted range
+      const startPercentage =
+        ((value.min - minWeekly) / (maxWeekly - minWeekly)) * 100;
+      const endPercentage =
+        ((value.max - minWeekly) / (maxWeekly - minWeekly)) * 100;
+      minPercentage.push(startPercentage);
+      maxPercentage.push(endPercentage);
+    }
+
+    for (let i = 0; i < tempRange.length; i++) {
+      tempRange[i].min = minWeekly;
+      tempRange[i].max = maxWeekly;
+      // // Set the background gradient dynamically
+      const gradient = `linear-gradient(to right, rgb(214, 207, 207) 0%, rgb(214, 207, 207) ${minPercentage[i]}%, rgb(57, 182, 207) ${minPercentage[i]}%, rgb(231, 182, 83) ${maxPercentage[i]}%, rgb(214, 207, 207) ${maxPercentage[i]}%, rgb(214, 207, 207) 100%`;
+
+      // // Apply the dynamic gradient to the slider track
+      tempRange[i].style.background = gradient;
+    }
+  }
+
   async _setCityTime() {
     try {
       const cityTimeZone = this.weatherService.timezone;
@@ -220,7 +270,7 @@ class App {
     min="10"
     max="33"
     step="1"
-    id="temperatureRange"
+    class="temperatureRange"
   />
 </div>
 <div class="weekly_temperature_max">
@@ -281,10 +331,12 @@ class App {
       await this._getWeekday();
       await this._displayTemperature();
       await this._minAndMaxTemp();
+      // await this._calculateMinMaxRange();
       // await this._displayMainInfo();
       await this._displayWeekTemp();
       await this._weatherIcons();
       await this._displayMainInfo();
+      await this._displayRange();
     } catch (error) {
       console.log(error);
     }
