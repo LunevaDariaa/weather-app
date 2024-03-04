@@ -16,7 +16,7 @@ body {
   margin: 0;
   padding: 0;
   /* background-image: url("/day_anime.jpg"); */
-  background-image: url("/night_anime_darker1.png");
+  background-image: url("./background/night_anime_darker1.png");
   background-repeat: no-repeat;
   background-attachment: fixed;
   background-size: cover;
