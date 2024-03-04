@@ -3,7 +3,7 @@ import { DateTime } from "./luxon.js";
 
 import WeatherService from "./weatherService.js";
 // document.getElementById("temperatureRange").disabled = true;
-const dayNames = ["Sun", "Mon", "Tue", "Wed", "Th", "Fri", "Sat"];
+// const dayNames = ["Mon", "Tue", "Wed", "Th", "Fri", "Sat", "Sun"];
 const container = document.querySelector("#hourly_container");
 const weekContainer = document.querySelector(".week_weather_container");
 class App {
@@ -12,9 +12,9 @@ class App {
   #curTime;
   #curDate;
   #curIcon;
+  #daysAfter;
   #temperatureArr;
   #minMaxPerDay = {};
-  #dayOfWeekName;
   #hourWeatherCode = [];
   constructor() {
     this.weatherService = new WeatherService();
@@ -24,6 +24,8 @@ class App {
     this.#curDate = null;
     this.#curIcon = "d220.png";
     this.#curTime = null;
+    this.#daysAfter = [];
+
     document
       .querySelector(".search_btn")
       .addEventListener("click", () => this.handleProgramFlow());
@@ -32,12 +34,21 @@ class App {
   }
 
   async _getWeekday() {
-    const now = new Date();
-    const dayOfWeekNumber = now.getDay();
-    this.#dayOfWeekName = dayNames[dayOfWeekNumber];
+    if (this.#daysAfter) {
+      this.#daysAfter = [];
+    }
+    for (let i = 0; i < 7; i++) {
+      if (i === 6) {
+        this.#daysAfter.unshift("Today");
+      }
+      const plusDay = this.#cityTime.plus({ days: i + 1 });
+      const toStr = plusDay.toLocaleString({ weekday: "short" });
+      this.#daysAfter.push(toStr);
+    }
 
-    console.log("Day of the week (name):", this.#dayOfWeekName);
+    console.log(this.#daysAfter);
   }
+
   async _minAndMaxTemp() {
     try {
       let days = {};
@@ -197,7 +208,7 @@ class App {
   }
   _insertWeekTemp(min, max, i) {
     const text = `  <div id="weekly_row">
-<div class="weekly_day">Today</div>
+<div class="weekly_day">${this.#daysAfter[i]}</div>
 <img class="weekly_weather_symbol" data-type='${i}' src="symbols/d000.png" alt="#">
 <div class="weekly_temperature_min">
   <div class="weekly_min_temp">${min}</div>
@@ -267,10 +278,10 @@ class App {
     try {
       this.data = await this.weatherService.fetchWeatherData();
       await this._setCityTime();
+      await this._getWeekday();
       await this._displayTemperature();
       await this._minAndMaxTemp();
       // await this._displayMainInfo();
-      await this._getWeekday();
       await this._displayWeekTemp();
       await this._weatherIcons();
       await this._displayMainInfo();

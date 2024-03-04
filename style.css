@@ -4,7 +4,8 @@
 * {
   margin: 0;
   padding: 0;
-  /* font-family: "Protest Riot"; */
+  /* color: black; */
+
   color: white;
   font-family: "Alata";
 }
@@ -15,13 +16,12 @@ body {
   margin: 0;
   padding: 0;
   /* background-image: url("/day_anime.jpg"); */
-  background-image: url("/night_anime.jpg");
+  background-image: url("/night_anime_darker1.png");
   background-repeat: no-repeat;
   background-attachment: fixed;
   background-size: cover;
   /* background-color: rgba(89, 124, 148, 0.97); */
   background-position: center;
-  /* backdrop-filter: blur(50px); */
 }
 
 /* Header content */
@@ -92,6 +92,7 @@ header {
   align-self: flex-end;
   min-width: 57vh;
   height: 78vh;
+
   overflow: hidden;
   bottom: 10px;
   box-sizing: border-box;
@@ -141,6 +142,7 @@ header {
 
 .main_info_temp {
   font-size: 13.8vmin;
+
   /* font-family: "Alata"; */
 }
 
@@ -233,6 +235,9 @@ header {
   align-items: center;
   justify-content: space-around;
   font-size: 2vmin;
+}
+.weekly_day {
+  min-width: 5vw;
 }
 .weekly_weather_symbol {
   /* font-size: 2vmin; */
