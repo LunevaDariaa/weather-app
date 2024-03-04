@@ -53,7 +53,7 @@ class WeatherService {
       const data = await response.json();
       return data;
     } catch (error) {
-      console.error("Error fetching data:", error.message);
+      console.log(error);
     }
   }
 }

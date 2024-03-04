@@ -2,8 +2,6 @@
 import { DateTime } from "./luxon.js";
 
 import WeatherService from "./weatherService.js";
-// document.getElementById("temperatureRange").disabled = true;
-// const dayNames = ["Mon", "Tue", "Wed", "Th", "Fri", "Sat", "Sun"];
 const container = document.querySelector("#hourly_container");
 const weekContainer = document.querySelector(".week_weather_container");
 class App {
@@ -33,6 +31,13 @@ class App {
       .addEventListener("click", () => this.handleProgramFlow());
 
     this.handleProgramFlow();
+    const self = this;
+
+    document.addEventListener("keydown", function (event) {
+      if (event.key === "Enter") {
+        self.handleProgramFlow();
+      }
+    });
   }
 
   async _getWeekday() {
@@ -212,9 +217,9 @@ class App {
         const code = weeklyWeatherCodes[i];
         const data = this._getWeatherDescription(code);
         const { src } = data;
-
+        const alwaysDay = "d" + src.slice(1);
         const weeklyImg = weeklyImgs[i];
-        weeklyImg.src = `symbols/${src}`;
+        weeklyImg.src = `symbols/${alwaysDay}`;
       }
 
       resolve(); // Resolve the promise once the content is updated
@@ -285,7 +290,12 @@ class App {
   async _isDay() {
     try {
       const dayInfo = this.data.hourly.is_day;
-      return dayInfo[0] === 1 ? (this.#isDay = "d") : (this.#isDay = "n");
+      // console.log(dayInfo);
+      const index = this.#curTime;
+
+      for (let i = index; i < dayInfo.length; i++) {
+        return dayInfo[i] === 1 ? (this.#isDay = "d") : (this.#isDay = "n");
+      }
     } catch (err) {
       console.error(err);
     }
