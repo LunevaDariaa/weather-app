@@ -103,10 +103,10 @@ header {
 .hourly_weather_conteiner {
   display: flex;
   flex-direction: column;
-  justify-content: space-around;
+  justify-content: first baseline;
   border-radius: 20px;
   margin: 2px;
-  padding: 4%;
+  padding: 2%;
   background-color: rgba(68, 62, 68, 0.559);
   backdrop-filter: blur(11px);
   /* box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1); */
@@ -194,15 +194,29 @@ header {
   width: 100%; /* Adjust the width of the line */
 }
 
+.hourly_temperature {
+  display: flex;
+  text-align: center;
+  justify-content: center;
+}
 #hourly_container {
   display: flex;
   justify-content: space-around;
   font-size: 2.2vmin;
+  margin-top: 5%;
   height: 14vh;
   align-items: center;
   box-sizing: border-box;
 }
+#hourly_container > :not(:first-child) {
+  padding-top: 25px;
+}
 
+#hourly_container > :first-child {
+  background-color: #4b5b8381;
+  padding: 0 0 3px 0;
+  border-radius: 8px;
+}
 /* @media screen and (min-width: 600px) {
   #hourly_container {
     font-size: 1.5vw;
@@ -210,6 +224,7 @@ header {
 } */
 .hourly_col {
   text-align: center;
+  /* padding-top: 5px; */
 }
 .hourly_weather_symbol {
   width: 26px;
@@ -228,7 +243,7 @@ header {
 }
 /* Weekly */
 #weekly_row {
-  padding: 0;
+  padding: 0 10px;
   display: flex;
   flex-grow: 2;
   flex-direction: row;
@@ -247,11 +262,14 @@ header {
 .weekly_temperature_min,
 .weekly_temperature_max {
   display: flex;
+  min-width: 8%;
 }
 
 /* Slider */
 .temperature-slider {
-  width: 30%;
+  /* margin: 0 5px; */
+  min-width: 26%;
+  width: 29%;
   max-width: 150px;
   text-align: center;
 }
@@ -303,10 +321,12 @@ img {
 .now {
   margin: 0;
   height: 25px;
+  text-align: center;
   width: 48px;
-  background-color: #ff00c8;
-  margin-top: 3vmin;
+  background-color: #bb3ebf;
+  /* margin-top: 1vmin; */
   color: rgb(255, 255, 255);
-  border-radius: 6px;
+  border-top-left-radius: 6px;
+  border-top-right-radius: 6px;
   font-size: 1.5vmin;
 }

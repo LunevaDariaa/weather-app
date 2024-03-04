@@ -16,6 +16,7 @@ class App {
   #temperatureArr;
   #minMaxPerDay = {};
   #range;
+  #isDay = true;
   #hourWeatherCode = [];
   constructor() {
     this.weatherService = new WeatherService();
@@ -284,12 +285,7 @@ class App {
   async _isDay() {
     try {
       const dayInfo = this.data.hourly.is_day;
-      console.log(dayInfo);
-      if (dayInfo[0] === 1) {
-        console.log("day");
-      } else {
-        console.log("night");
-      }
+      return dayInfo[0] === 1 ? (this.#isDay = "d") : (this.#isDay = "n");
     } catch (err) {
       console.error(err);
     }
@@ -329,6 +325,7 @@ class App {
       this.data = await this.weatherService.fetchWeatherData();
       await this._setCityTime();
       await this._getWeekday();
+      await this._isDay();
       await this._displayTemperature();
       await this._minAndMaxTemp();
       // await this._calculateMinMaxRange();
@@ -345,116 +342,68 @@ class App {
   _getWeatherDescription(weatherCode) {
     switch (weatherCode) {
       case 0:
-        return { text: "Clear sky", src: "d000.png" };
+        return { text: "Clear sky", src: `${this.#isDay}000.png` };
       case 1:
-        return { text: "Mainly clear sky", src: "d100.png" };
+        return { text: "Mainly clear sky", src: `${this.#isDay}100.png` };
       case 2:
-        return { text: "Partly cloudy sky", src: "d200.png" };
+        return { text: "Partly cloudy sky", src: `${this.#isDay}200.png` };
       case 3:
-        return { text: "Overcast sky", src: "d400.png" };
+        return { text: "Overcast sky", src: `${this.#isDay}400.png` };
       case 45:
       case 48:
-        return { text: "Fog ", src: "d600.png" };
+        return { text: "Fog", src: `${this.#isDay}600.png` };
       case 51:
-        return {
-          text: "Light Drizzle",
-          src: "d210.png",
-        };
+        return { text: "Light Drizzle", src: `${this.#isDay}210.png` };
       case 53:
-        return {
-          text: " Moderate Drizzle",
-          src: "d310.png",
-        };
+        return { text: "Moderate Drizzle", src: `${this.#isDay}310.png` };
       case 55:
-        return {
-          text: "Dense Drizzle",
-          src: "d410.png",
-        };
+        return { text: "Dense Drizzle", src: `${this.#isDay}410.png` };
       case 56:
-        return {
-          text: "Freezing Drizzle",
-          src: "d211.png",
-        };
+        return { text: "Freezing Drizzle", src: `${this.#isDay}211.png` };
       case 57:
-        return {
-          text: "Dense Freezing Drizzle",
-          src: "d411.png",
-        };
+        return { text: "Dense Freezing Drizzle", src: `${this.#isDay}411.png` };
       case 61:
-        return {
-          text: "Slight Rain",
-          src: "d220.png",
-        };
+        return { text: "Slight Rain", src: `${this.#isDay}220.png` };
       case 63:
-        return {
-          text: "Moderate Rain",
-          src: "d320.png",
-        };
+        return { text: "Moderate Rain", src: `${this.#isDay}320.png` };
       case 65:
-        return {
-          text: "Heavy Rain",
-          src: "d420.png",
-        };
+        return { text: "Heavy Rain", src: `${this.#isDay}420.png` };
       case 66:
-        return {
-          text: "Light Freezing Rain ",
-          src: "d221.png",
-        };
+        return { text: "Light Freezing Rain", src: `${this.#isDay}221.png` };
       case 67:
-        return {
-          text: "heavy Freezing Rain",
-          src: "d421.png",
-        };
+        return { text: "Heavy Freezing Rain", src: `${this.#isDay}421.png` };
       case 71:
-        return {
-          text: "Slight Snow fall",
-          src: "d212.png",
-        };
+        return { text: "Slight Snow fall", src: `${this.#isDay}212.png` };
       case 73:
-        return {
-          text: "Moderate Snow fall",
-          src: "d312.png",
-        };
+        return { text: "Moderate Snow fall", src: `${this.#isDay}312.png` };
       case 75:
-        return {
-          text: " Heavy Snow fall",
-          src: "d412.png",
-        };
+        return { text: "Heavy Snow fall", src: `${this.#isDay}412.png` };
       case 77:
-        return { text: "Snow grains", src: "d422.png" };
+        return { text: "Snow grains", src: `${this.#isDay}422.png` };
       case 80:
-        return {
-          text: " Slight Rain showers",
-          src: "d210.png",
-        };
+        return { text: "Slight Rain showers", src: `${this.#isDay}210.png` };
       case 81:
-        return {
-          text: " Moderate Rain showers",
-          src: "d310.png",
-        };
+        return { text: "Moderate Rain showers", src: `${this.#isDay}310.png` };
       case 82:
-        return {
-          text: "Heavy Rain showers",
-          src: "d410.png",
-        };
+        return { text: "Heavy Rain showers", src: `${this.#isDay}410.png` };
       case 85:
-        return { text: "Slight Snow showers", src: "d222.png" };
+        return { text: "Slight Snow showers", src: `${this.#isDay}222.png` };
       case 86:
-        return { text: "Heavy Snow showers", src: "d322.png" };
+        return { text: "Heavy Snow showers", src: `${this.#isDay}322.png` };
       case 95:
-        return { text: "Slight Thunderstorm", src: "d432.png" };
+        return { text: "Slight Thunderstorm", src: `${this.#isDay}432.png` };
       case 96:
         return {
           text: "Thunderstorm with slight hail",
-          src: "d240.png",
+          src: `${this.#isDay}240.png`,
         };
       case 99:
         return {
           text: "Thunderstorm with heavy hail",
-          src: "d340.png",
+          src: `${this.#isDay}340.png`,
         };
       default:
-        return { text: "Unknown weather code", src: "d000.png" };
+        return { text: "Unknown weather code", src: `${this.#isDay}000.png` };
     }
   }
 }
