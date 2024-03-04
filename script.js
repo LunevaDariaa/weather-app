@@ -401,16 +401,16 @@ class App {
       case 86:
         return { text: "Heavy Snow showers", src: `${this.#isDay}322.png` };
       case 95:
-        return { text: "Slight Thunderstorm", src: `${this.#isDay}432.png` };
+        return { text: "Slight Thunderstorm", src: `${this.#isDay}240.png` };
       case 96:
         return {
           text: "Thunderstorm with slight hail",
-          src: `${this.#isDay}240.png`,
+          src: `${this.#isDay}340.png`,
         };
       case 99:
         return {
           text: "Thunderstorm with heavy hail",
-          src: `${this.#isDay}340.png`,
+          src: `${this.#isDay}440.png`,
         };
       default:
         return { text: "Unknown weather code", src: `${this.#isDay}000.png` };
