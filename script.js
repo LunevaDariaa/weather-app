@@ -104,10 +104,7 @@ class App {
       await this._calculateMinMaxRange();
 
     const tempRange = document.querySelectorAll(".temperatureRange");
-    // if (minPercentage && maxPercentage) {
-    //   minPercentage = [];
-    //   maxPercentage = [];
-    // }
+
     let minPercentage = [];
     let maxPercentage = [];
 
@@ -289,13 +286,28 @@ class App {
   }
   async _isDay() {
     try {
-      const dayInfo = this.data.hourly.is_day;
-      // console.log(dayInfo);
-      const index = this.#curTime;
+      const dailyData = this.data.daily;
+      const timeZone = this.weatherService.timezone;
+      const localDateTime = DateTime.local().setZone(timeZone);
 
-      for (let i = index; i < dayInfo.length; i++) {
-        return dayInfo[i] === 1 ? (this.#isDay = "d") : (this.#isDay = "n");
+      const sunriseTimes = dailyData.sunrise.map((time) =>
+        DateTime.fromISO(time, { zone: "UTC" }).setZone(timeZone)
+      );
+
+      const sunsetTimes = dailyData.sunset.map((time) =>
+        DateTime.fromISO(time, { zone: "UTC" }).setZone(timeZone)
+      );
+
+      for (let i = 0; i < sunriseTimes.length; i++) {
+        const sunrise = sunriseTimes[i];
+        const sunset = sunsetTimes[i];
+        if (localDateTime >= sunrise && localDateTime < sunset) {
+          this.#isDay = "d";
+          return;
+        }
       }
+
+      this.#isDay = "n";
     } catch (err) {
       console.error(err);
     }

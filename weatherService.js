@@ -48,7 +48,7 @@ class WeatherService {
       const { locationlng, locationLon } = await this.getLocationData(userCity);
 
       const response = await fetch(
-        `https://api.open-meteo.com/v1/forecast?latitude=${locationlng}&longitude=${locationLon}&hourly=temperature_2m,apparent_temperature,precipitation_probability,weather_code,surface_pressure,is_day,rain&past_days=1&daily=weather_code&models=icon_global`
+        `https://api.open-meteo.com/v1/forecast?latitude=${locationlng}&longitude=${locationLon}&hourly=temperature_2m,apparent_temperature,precipitation_probability,weather_code,surface_pressure,is_day,rain&past_days=1&daily=weather_code,sunrise,sunset&models=icon_global`
       );
       const data = await response.json();
       return data;
