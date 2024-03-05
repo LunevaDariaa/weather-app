@@ -335,9 +335,11 @@ class App {
   // Determine whether it is day or night based on sunrise and sunset times
   async _isDay() {
     try {
+      this.#isDay = [];
       const { currentIndex } = await this._fetchTemperatureData();
       const isDayArray = this.data.hourly.is_day;
-
+      console.log(isDayArray);
+      console.log(currentIndex);
       for (let i = currentIndex; i < currentIndex + 8; i++) {
         isDayArray[i] === 1 ? this.#isDay.push("d") : this.#isDay.push("n");
       }

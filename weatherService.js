@@ -2,7 +2,7 @@
 
 class WeatherService {
   constructor() {
-    this.defaultCity = "Toronto";
+    this.defaultCity = "Tokyo";
     this.city = this.defaultCity;
     this.timezone = null;
   }
