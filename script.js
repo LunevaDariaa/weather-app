@@ -359,6 +359,15 @@ class App {
     time.innerHTML = "";
   }
 
+  async _clearInput() {
+    try {
+      const inputField = document.querySelector(".city_search");
+      if (inputField) inputField.value = "";
+    } catch (err) {
+      throw new Error(err);
+    }
+  }
+
   // Display main information (current temperature, location, time, min, max)
   async _displayMainInfo() {
     console.log(this.#minMaxPerDay);
@@ -391,12 +400,11 @@ class App {
       await this._isDay();
       await this._displayTemperature();
       await this._minAndMaxTemp();
-      // await this._calculateMinMaxRange();
-      // await this._displayMainInfo();
       await this._displayWeekTemp();
       await this._weatherIcons();
       await this._displayRange();
       await this._displayMainInfo();
+      await this._clearInput();
     } catch (error) {
       console.log(error);
     }
